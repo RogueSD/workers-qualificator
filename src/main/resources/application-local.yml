@@ -1,6 +1,8 @@
 # Данные подключения к БД
 spring:
+  jpa:
+    show-sql: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/some_database
+    url: jdbc:postgresql://localhost:5432/worker_qualification
     username: postgres
-    password: password
+    password: zaq1@WSX

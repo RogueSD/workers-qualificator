@@ -1,14 +1,19 @@
+server:
+  servlet:
+    context-path: /api
+
 spring:
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/some_database}
     username: ${DB_USER:postgres}
     password: ${DB_PASS:password}
+    driverClassName: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL81Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   server:
     port: 8080
 

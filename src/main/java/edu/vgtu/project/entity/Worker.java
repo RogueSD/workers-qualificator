@@ -27,6 +27,6 @@ public class Worker {
     @JoinColumn(name = "qualificationId", nullable = false)
     Qualification qualification;
 
-    @OneToMany(mappedBy = "complaint", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL)
     Set<Complaint> complaints;
 }
