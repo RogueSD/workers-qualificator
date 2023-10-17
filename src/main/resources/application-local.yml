@@ -1,0 +1,6 @@
+# Данные подключения к БД
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/some_database
+    username: postgres
+    password: password

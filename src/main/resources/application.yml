@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/some_database}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:password}
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL81Dialect
+  server:
+    port: 8080
+
+logging:
+  level:
+    root: info
+    edu.vgtu.project: debug
+    org.springframework: warn
