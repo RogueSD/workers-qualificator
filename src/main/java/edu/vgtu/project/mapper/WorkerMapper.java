@@ -8,16 +8,18 @@ import edu.vgtu.project.entity.Complaint;
 import edu.vgtu.project.entity.Qualification;
 import edu.vgtu.project.entity.Specialization;
 import edu.vgtu.project.entity.Worker;
+import org.aspectj.apache.bcel.generic.TABLESWITCH;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
 public abstract class WorkerMapper {
     public static final double EPSILON = 0.01;
 
-    @Mapping(target = "defectiveProductsCount", constant = "0L")
-    @Mapping(target = "manufacturedProductsCount", constant = "0L")
+    @Mapping(target = "defectiveProductsCount", source = "defectedProducts")
+    @Mapping(target = "manufacturedProductsCount", source = "manufacturedProducts")
     @Mapping(target = "name", source = "firstName")
     @Mapping(target = "surname", source = "lastName")
     @Mapping(target = "id", ignore = true)
@@ -25,6 +27,16 @@ public abstract class WorkerMapper {
     @Mapping(target = "qualification", source = "qualification")
     @Mapping(target = "complaints", source = "complaints")
     public abstract Worker toEntity(WorkerDto source);
+
+    @Mapping(target = "defectiveProductsCount", source = "defectedProducts")
+    @Mapping(target = "manufacturedProductsCount", source = "manufacturedProducts")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "name", source = "firstName")
+    @Mapping(target = "surname", source = "lastName")
+    @Mapping(target = "auditResults", source = "lastAuditComment")
+    @Mapping(target = "qualification", source = "qualification")
+    @Mapping(target = "complaints", source = "complaints")
+    public abstract void updateEntity(@MappingTarget Worker target, WorkerDto source);
 
     @Mapping(target = "name", source = "qualificationName")
     @Mapping(target = "id", source = "id")
@@ -49,6 +61,8 @@ public abstract class WorkerMapper {
     @Mapping(target = "qualification", source = "qualification")
     @Mapping(target = "complaints", source = "complaints")
     @Mapping(target = "isQualified", source = ".", qualifiedByName = "calculateQualification")
+    @Mapping(target = "defectedProducts", source = "defectiveProductsCount")
+    @Mapping(target = "manufacturedProducts", source = "manufacturedProductsCount")
     public abstract WorkerDto toDto(Worker source);
 
     @Mapping(target = "complaintId", source = "id")

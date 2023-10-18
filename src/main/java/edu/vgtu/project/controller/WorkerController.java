@@ -26,6 +26,13 @@ public class WorkerController {
          return worker;
      }
 
+     @PutMapping
+     public Long updateWorker(@RequestBody WorkerDto worker) {
+         log.info("Получен запрос на обновление данных работника");
+         workerService.updateWorker(worker);
+         return worker.getId();
+     }
+
      @PostMapping
      public Long createWorker(@RequestBody WorkerDto worker) {
          log.info("Сохранение работника: {}", worker);

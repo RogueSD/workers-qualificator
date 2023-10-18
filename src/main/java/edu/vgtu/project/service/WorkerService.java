@@ -37,6 +37,15 @@ public class WorkerService {
         return workerRepository.save(entity).getId();
     }
 
+    public void updateWorker(WorkerDto worker) {
+        final var entity = workerRepository.findById(worker.getId())
+                .orElseThrow(() -> new RuntimeException("Работник не найден!"));
+
+        mapper.updateEntity(entity, worker);
+
+        workerRepository.save(entity);
+    }
+
     public Long createQualification(QualificationDto qualification) {
         final var entity = mapper.toEntity(qualification);
         log.info("Сохранение данных квалификации: {}", entity);

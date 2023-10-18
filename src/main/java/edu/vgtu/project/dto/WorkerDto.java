@@ -18,4 +18,6 @@ public class WorkerDto {
     Boolean isQualified;
     String lastAuditComment;
     List<ComplaintDto> complaints;
+    Long manufacturedProducts;
+    Long defectedProducts;
 }
