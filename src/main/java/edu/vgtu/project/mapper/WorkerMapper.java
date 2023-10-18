@@ -11,11 +11,36 @@ import edu.vgtu.project.entity.Worker;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.springframework.util.NumberUtils;
 
 @Mapper(componentModel = "spring")
 public abstract class WorkerMapper {
     public static final double EPSILON = 0.01;
+
+    @Mapping(target = "defectiveProductsCount", constant = "0L")
+    @Mapping(target = "manufacturedProductsCount", constant = "0L")
+    @Mapping(target = "name", source = "firstName")
+    @Mapping(target = "surname", source = "lastName")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "auditResults", source = "lastAuditComment")
+    @Mapping(target = "qualification", source = "qualification")
+    @Mapping(target = "complaints", source = "complaints")
+    public abstract Worker toEntity(WorkerDto source);
+
+    @Mapping(target = "name", source = "qualificationName")
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "minimalManufacturedProducts", source = "manufacturedProductCount")
+    @Mapping(target = "maximalDefectiveProductsPercentage", source = "defectiveProductsPercentage")
+    @Mapping(target = "specialization", source = "specialization")
+    public abstract Qualification toEntity(QualificationDto source);
+
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "specializationName")
+    public abstract Specialization toEntity(SpecializationDto source);
+
+    @Mapping(target = "id", source = "complaintId")
+    @Mapping(target = "content", source = "complaintContent")
+    @Mapping(target = "worker", ignore = true)
+    public abstract Complaint toEntity(ComplaintDto source);
 
     @Mapping(target = "specialization", source = "qualification.specialization")
     @Mapping(target = "lastName", source = "surname")

@@ -13,4 +13,5 @@ public class QualificationDto {
     String qualificationName;
     Long manufacturedProductCount;
     Double defectiveProductsPercentage;
+    SpecializationDto specialization;
 }

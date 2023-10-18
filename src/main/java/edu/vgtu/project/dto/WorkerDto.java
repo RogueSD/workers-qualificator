@@ -14,7 +14,6 @@ public class WorkerDto {
     Long id;
     String firstName;
     String lastName;
-    SpecializationDto specialization;
     QualificationDto qualification;
     Boolean isQualified;
     String lastAuditComment;

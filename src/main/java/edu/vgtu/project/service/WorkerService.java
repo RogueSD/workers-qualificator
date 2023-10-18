@@ -14,7 +14,7 @@ public class WorkerService {
     private final WorkerRepository repository;
     private final WorkerMapper mapper;
 
-    public WorkerDto get(Long workerId) {
+    public WorkerDto getWorkerById(Long workerId) {
         log.info("Поиск работника по идентификатору: {}", workerId);
 
         final var entity = repository.findById(workerId)
@@ -23,5 +23,13 @@ public class WorkerService {
         log.info("Найден работник: {}", entity);
 
         return mapper.toDto(entity);
+    }
+
+    public Long create(WorkerDto worker) {
+        final var entity = mapper.toEntity(worker);
+
+        log.info("Сохранение данных работника: {}", entity);
+
+        return repository.save(entity).getId();
     }
 }
