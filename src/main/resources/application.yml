@@ -2,6 +2,10 @@ server:
   servlet:
     context-path: /api
 
+springdoc:
+  swagger-ui:
+    path: /swagger.html
+
 spring:
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/some_database}

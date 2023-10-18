@@ -29,18 +29,24 @@ public class WorkerController {
      @PostMapping
      public Long createWorker(@RequestBody WorkerDto worker) {
          log.info("Сохранение работника: {}", worker);
-         final Long id = workerService.create(worker);
+         final Long id = workerService.createWorker(worker);
          log.info("Работник сохранён с идентификатором: {}", id);
          return id;
      }
 
      @PostMapping("/specialization")
      public Long createSpecialization(@RequestBody SpecializationDto specialization) {
-         return null;
+         log.info("Сохранение профессии: {}", specialization);
+         final Long id = workerService.createSpecialization(specialization);
+         log.info("Профессия сохранёна с идентификатором: {}", id);
+         return id;
      }
 
      @PostMapping("/qualification")
      public Long createQualification(@RequestBody QualificationDto qualification) {
-         return null;
+         log.info("Сохранение квалификации: {}", qualification);
+         final Long id = workerService.createQualification(qualification);
+         log.info("Квалификация сохранёна с идентификатором: {}", id);
+         return id;
      }
 }

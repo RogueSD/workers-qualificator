@@ -42,7 +42,6 @@ public abstract class WorkerMapper {
     @Mapping(target = "worker", ignore = true)
     public abstract Complaint toEntity(ComplaintDto source);
 
-    @Mapping(target = "specialization", source = "qualification.specialization")
     @Mapping(target = "lastName", source = "surname")
     @Mapping(target = "lastAuditComment", source = "auditResults")
     @Mapping(target = "firstName", source = "name")
