@@ -14,8 +14,9 @@ public class WorkerDto {
     Long id;
     String firstName;
     String lastName;
-    String specialization;
-    String qualification;
+    SpecializationDto specialization;
+    QualificationDto qualification;
+    Boolean isQualified;
     String lastAuditComment;
     List<ComplaintDto> complaints;
 }
