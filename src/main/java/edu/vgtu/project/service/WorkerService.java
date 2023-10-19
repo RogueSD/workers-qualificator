@@ -3,13 +3,22 @@ package edu.vgtu.project.service;
 import edu.vgtu.project.dto.QualificationDto;
 import edu.vgtu.project.dto.SpecializationDto;
 import edu.vgtu.project.dto.WorkerDto;
+import edu.vgtu.project.dto.WorkerShortDto;
+import edu.vgtu.project.dto.utils.PageDto;
+import edu.vgtu.project.entity.Worker;
 import edu.vgtu.project.mapper.WorkerMapper;
 import edu.vgtu.project.repository.QualificationRepository;
 import edu.vgtu.project.repository.SpecializationRepository;
 import edu.vgtu.project.repository.WorkerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -56,5 +65,17 @@ public class WorkerService {
         final var entity = mapper.toEntity(specializationDto);
         log.info("Сохранение данных профессии: {}", entity);
         return specializationRepository.save(entity).getId();
+    }
+
+    public PageDto<WorkerShortDto> getWorkerList(Long page, Long size, Sort.Direction direction) {
+        log.info("Получен запрос на получение страницы рабоников");
+        Page<Worker> workers = workerRepository.getWorkers(PageRequest.of(page.intValue(), size.intValue(), Sort.by(direction, "id")));
+        return mapper.toPage(workers);
+    }
+
+    public List<WorkerDto> getAllWorkers() {
+        return workerRepository.findAll().stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
     }
 }

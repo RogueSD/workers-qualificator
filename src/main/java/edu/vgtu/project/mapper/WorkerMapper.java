@@ -1,20 +1,15 @@
 package edu.vgtu.project.mapper;
 
-import edu.vgtu.project.dto.ComplaintDto;
-import edu.vgtu.project.dto.QualificationDto;
-import edu.vgtu.project.dto.SpecializationDto;
-import edu.vgtu.project.dto.WorkerDto;
+import edu.vgtu.project.dto.*;
+import edu.vgtu.project.dto.utils.PageDto;
 import edu.vgtu.project.entity.Complaint;
 import edu.vgtu.project.entity.Qualification;
 import edu.vgtu.project.entity.Specialization;
 import edu.vgtu.project.entity.Worker;
-import org.aspectj.apache.bcel.generic.TABLESWITCH;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
+import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
 public abstract class WorkerMapper {
     public static final double EPSILON = 0.01;
 
@@ -27,6 +22,11 @@ public abstract class WorkerMapper {
     @Mapping(target = "qualification", source = "qualification")
     @Mapping(target = "complaints", source = "complaints")
     public abstract Worker toEntity(WorkerDto source);
+
+    @Mapping(target = "currentPage", source = "number")
+    @Mapping(target = "totalCount", source = "totalElements")
+    @Mapping(target = "content", source = "content")
+    public abstract PageDto<WorkerShortDto> toPage(Page<Worker> source);
 
     @Mapping(target = "defectiveProductsCount", source = "defectedProducts")
     @Mapping(target = "manufacturedProductsCount", source = "manufacturedProducts")

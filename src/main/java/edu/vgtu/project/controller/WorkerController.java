@@ -3,9 +3,12 @@ package edu.vgtu.project.controller;
 import edu.vgtu.project.dto.QualificationDto;
 import edu.vgtu.project.dto.SpecializationDto;
 import edu.vgtu.project.dto.WorkerDto;
+import edu.vgtu.project.dto.WorkerShortDto;
+import edu.vgtu.project.dto.utils.PageDto;
 import edu.vgtu.project.service.WorkerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -55,5 +58,11 @@ public class WorkerController {
          final Long id = workerService.createQualification(qualification);
          log.info("Квалификация сохранёна с идентификатором: {}", id);
          return id;
+     }
+
+     @GetMapping
+     public PageDto<WorkerShortDto> getWorkersPage(@RequestParam(defaultValue = "0") Long page, @RequestParam(defaultValue = "10") Long size, @RequestParam(defaultValue = "ASC") Sort.Direction direction) {
+         log.info("Запрос страницы");
+         return workerService.getWorkerList(page, size, direction);
      }
 }
