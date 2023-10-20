@@ -78,4 +78,9 @@ public class WorkerService {
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    public void checkWorkerQualification(Long workerId) {
+        //final var entity = getWorkerById(workerId);
+        
+    }
 }
