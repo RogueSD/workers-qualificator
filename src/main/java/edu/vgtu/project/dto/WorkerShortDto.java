@@ -11,7 +11,6 @@ import lombok.experimental.FieldDefaults;
 public class WorkerShortDto {
     Long id;
     String fullName;
-    SpecializationDto specialization;
     QualificationDto qualification;
     Boolean isQualified;
 }
