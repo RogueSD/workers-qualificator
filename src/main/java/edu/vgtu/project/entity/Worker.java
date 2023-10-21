@@ -29,8 +29,4 @@ public class Worker {
 
     @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL)
     Set<Complaint> complaints;
-
-    public double getDefectedProducts() {
-        return 0;
-    }
 }

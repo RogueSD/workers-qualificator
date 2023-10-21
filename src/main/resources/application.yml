@@ -14,7 +14,7 @@ spring:
     driverClassName: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -23,8 +23,8 @@ spring:
   mail:
     host: smtp.mail.ru
     port: 465
-    username: email
-    password: password
+    username: ${MAIL_USER_EMAIL:nikita-saprygin@mail.ru}
+    password: ${MAIL_USER_PASSWORD:pTq4fKvZtVd1e2FF05RR}
     protocol: smtp
     properties:
      mail.transport.protocol: smtp
@@ -37,3 +37,7 @@ logging:
     root: info
     edu.vgtu.project: debug
     org.springframework: warn
+
+notification:
+  thread-pool: ${THREAD_POOL_SIZE:10}
+  recipient: ${RECIPIENT:nikita-saprygin@mail.ru}

@@ -1,9 +1,7 @@
 package edu.vgtu.project.service;
 
 import edu.vgtu.project.dto.QualificationDto;
-import edu.vgtu.project.dto.WorkerDto;
 import edu.vgtu.project.entity.Qualification;
-import edu.vgtu.project.entity.Specialization;
 import edu.vgtu.project.entity.Worker;
 import edu.vgtu.project.repository.WorkerRepository;
 import jakarta.annotation.PostConstruct;
@@ -49,8 +47,8 @@ public class NotificationService {
                             .id(correctQualification.getId())
                             .build()
             );
-            emailService.notifyQualificationUpdate(worker, "nikita-saprygin@mail.ru", "nikita-saprygin@mail.ru");
-            workerRepository.save(worker);
+            Worker savedWorker = workerRepository.save(worker);
+            emailService.notifyQualificationUpdate(savedWorker, "nikita-saprygin@mail.ru");
         }
     }
 
@@ -59,7 +57,7 @@ public class NotificationService {
         List<QualificationDto> qualifications = qualificationService.findAllBySpecializationId(currentQualification.getSpecialization().getId());
 
         for (QualificationDto qualification : qualifications) {
-            if (calculateQualified(worker) && isQualificationHigher(currentQualification, qualification)) {
+            if (calculateWorkerQualifiedFor(worker, qualification) && isQualificationHigher(qualification, currentQualification)) {
                 currentQualification = qualification;
             }
         }
@@ -67,7 +65,7 @@ public class NotificationService {
         return currentQualification;
     }
 
-    protected boolean calculateQualified(Worker worker) {
+    protected boolean calculateWorkerQualifiedFor(Worker worker, QualificationDto qualification) {
         if (worker == null || worker.getQualification() == null) {
             return true;
         }
@@ -82,16 +80,14 @@ public class NotificationService {
 
         double percentage = (double) defective / (double) made;
 
-        final var qualification = worker.getQualification();
+        final long minimal = qualification.getManufacturedProductCount() == null ? 0L : qualification.getManufacturedProductCount();
 
-        final long minimal = qualification.getMinimalManufacturedProducts() == null ? 0L : qualification.getMinimalManufacturedProducts();
-
-        return (+(qualification.getMaximalDefectiveProductsPercentage() - percentage)) <= EPSILON
+        return qualification.getDefectiveProductsPercentage() - percentage >= EPSILON
                 && ( minimal == 0L || made >= minimal);
     }
 
     protected boolean isQualificationHigher(QualificationDto left, QualificationDto right) {
-        return left.getManufacturedProductCount() < right.getManufacturedProductCount() ||
-                (+(left.getDefectiveProductsPercentage() - right.getDefectiveProductsPercentage())) <= EPSILON;
+        return left.getManufacturedProductCount() > right.getManufacturedProductCount() ||
+                left.getDefectiveProductsPercentage() - right.getDefectiveProductsPercentage() <= EPSILON;
     }
 }

@@ -89,7 +89,7 @@ public abstract class WorkerMapper {
 
         final long minimal = qualification.getMinimalManufacturedProducts() == null ? 0L : qualification.getMinimalManufacturedProducts();
 
-        return (+(qualification.getMaximalDefectiveProductsPercentage() - percentage)) <= EPSILON
+        return (qualification.getMaximalDefectiveProductsPercentage() - percentage) >= EPSILON
                 && ( minimal == 0L || made >= minimal);
     }
 
