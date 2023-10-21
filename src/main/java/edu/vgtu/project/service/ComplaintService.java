@@ -20,46 +20,37 @@ public class ComplaintService {
     private final ComplaintMapper mapper;
 
     public ComplaintFullDto find(Long id) {
-        log.info("Получен запрос на поиск жалобы с идентификатором: {}", id);
-
         return repository.findById(id)
                 .map(mapper::toFullDto)
                 .orElseThrow(() -> new BusinessException(404, "Жалоба не найдена!", null));
     }
 
     public List<ComplaintDto> findAllByWorkerId(Long workerId) {
-        log.info("Поиск всех жалоб по идентификатору работника: {}", workerId);
-
-        List<Complaint> allByWorkerId = repository.findAllByWorkerId(workerId);
-
-        log.info("Найдено жалоб: {}", allByWorkerId.size());
-
-        return mapper.toDtoList(allByWorkerId);
+        return mapper.toDtoList(
+                repository.findAllByWorkerId(workerId)
+        );
     }
 
     public Long create(ComplaintFullDto complaint) {
         if (complaint == null || complaint.getWorkerId() == null || complaint.getContent() == null) {
-            throw new BusinessException(400, "Данные не заполнены", null);
+            throw new BusinessException(400, "Данные жалобы не заполнены", null);
         }
 
-        log.info("Получен запрос на создание жалобы на работника с идентификатором: {}", complaint.getWorkerId());
-
-        final Complaint entity = repository.save(mapper.toEntityFromFull(complaint));
-
-        log.info("Создана жалоба с идентификатором: {}", entity.getId());
-        return entity.getId();
+        return repository.save(
+                mapper.toEntityFromFull(complaint)
+        ).getId();
     }
 
-    public Long update(ComplaintFullDto complaint) {
-        if (complaint.getId() == null) {
+    public void update(ComplaintFullDto complaint) {
+        if (complaint == null || complaint.getId() == null) {
             throw new BusinessException(404, "Не указан идентификатор жалобы", null);
         }
 
-        log.info("Получен запрос на обновление жалобы с идентификатором: {}", complaint.getId());
+        final Complaint entity = repository.findById(complaint.getId())
+                .orElseThrow(() -> new BusinessException(404, "Не найдены данные жалобы", null));
 
-        final Complaint entity = repository.save(mapper.toEntityFromFull(complaint));
+        mapper.updateEntity(entity, complaint);
 
-        log.info("Создана жалоба с идентификатором: {}", entity.getId());
-        return entity.getId();
+        repository.save(entity);
     }
 }

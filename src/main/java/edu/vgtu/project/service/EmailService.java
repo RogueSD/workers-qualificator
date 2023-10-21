@@ -29,8 +29,9 @@ public class EmailService {
     private final JavaMailSender emailSender;
 
 
-    public void notifyQualificationUpdate(Worker worker, String toAddress) {
-            sendTextEmail(toAddress, StringSubstitutor.replace(template, prepareArgs(worker)));
+    public void notifyQualificationUpdate(Worker worker, String recipient) {
+        log.info("Отправка сведений о работнике с идентификатором: {} на адрес электронной почты: {}", worker.getId(), recipient);
+        sendTextEmail(recipient, StringSubstitutor.replace(template, prepareArgs(worker)));
     }
 
     private void sendTextEmail(String toAddress, String message) {

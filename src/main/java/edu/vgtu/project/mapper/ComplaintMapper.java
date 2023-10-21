@@ -19,8 +19,15 @@ public abstract class ComplaintMapper {
     @Mapping(target = "worker", ignore = true)
     public abstract Complaint toEntity(ComplaintDto source);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "content", source = "content")
     @Mapping(target = "worker.id", source = "workerId")
     public abstract Complaint toEntityFromFull(ComplaintFullDto source);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "content", source = "content")
+    @Mapping(target = "worker.id", source = "id")
+    public abstract void updateEntity(@MappingTarget Complaint target, ComplaintFullDto source);
 
     @Mapping(target = "complaintId", source = "id")
     @Mapping(target = "complaintContent", source = "content")
