@@ -21,7 +21,7 @@ spring:
     driverClassName: org.postgresql.Driver
   jpa:
     hibernate:
-      default_schema: service
+      default_schema: ${DB_SCHEMA:schema}
       ddl-auto: validate
     properties:
       hibernate:

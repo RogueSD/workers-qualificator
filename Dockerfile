@@ -1,10 +1,10 @@
-FROM maven:3.5.0-jdk-17 AS builder
+FROM maven:3.8.3-amazoncorretto-17 AS builder
 ADD pom.xml pom.xml
 ADD ./src src/
 RUN mvn clean package
 
-FROM amazoncorretto:17-jre-alpine
-ADD ./src/main/resources/db/migration/* *
+FROM amazoncorretto:17.0.0-alpine
+ADD ./src/main/resources/db/migration/* db/migration/*
 ADD ./src/main/resources/application.yml application.yml
 COPY --from=builder ./target/project.jar application.jar
 
