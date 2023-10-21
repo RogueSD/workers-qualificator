@@ -13,9 +13,13 @@ import org.springframework.data.domain.Page;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
 public abstract class SpecializationMapper {
-    @Mapping(target = "id", source = "id")
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "name", source = "specializationName")
     public abstract Specialization toEntity(SpecializationDto source);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "name", source = "specializationName")
+    public abstract void updateEntity(@MappingTarget Specialization target, SpecializationDto source);
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "specializationName", source = "name")

@@ -2,6 +2,7 @@ package edu.vgtu.project.service;
 
 import edu.vgtu.project.dto.SpecializationDto;
 import edu.vgtu.project.dto.utils.PageDto;
+import edu.vgtu.project.entity.Specialization;
 import edu.vgtu.project.exception.BusinessException;
 import edu.vgtu.project.mapper.SpecializationMapper;
 import edu.vgtu.project.repository.SpecializationRepository;
@@ -43,12 +44,15 @@ public class SpecializationService {
     }
 
     public void update(SpecializationDto specialization) {
-        if (specialization == null || specialization.getSpecializationName() == null) {
-            throw new BusinessException(400, "Данные профессии некорректны", null);
+        if (specialization == null || specialization.getId() == null) {
+            throw new BusinessException(400, "Данные профессии некорректны, не указан идентификатор!", null);
         }
 
-        specializationRepository.save(
-                specializationMapper.toEntity(specialization)
-        );
+        final Specialization entity = specializationRepository.findById(specialization.getId())
+                .orElseThrow(() -> new BusinessException(404, "Данные профессии не найдены!", null));
+
+        specializationMapper.updateEntity(entity, specialization);
+
+        specializationRepository.save(entity);
     }
 }
