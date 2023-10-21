@@ -1,15 +1,28 @@
 package edu.vgtu.project.mapper;
 
-import edu.vgtu.project.dto.*;
+import edu.vgtu.project.dto.QualificationDto;
+import edu.vgtu.project.dto.SpecializationDto;
+import edu.vgtu.project.dto.WorkerDto;
+import edu.vgtu.project.dto.WorkerShortDto;
 import edu.vgtu.project.dto.utils.PageDto;
-import edu.vgtu.project.entity.Complaint;
 import edu.vgtu.project.entity.Qualification;
 import edu.vgtu.project.entity.Specialization;
 import edu.vgtu.project.entity.Worker;
-import org.mapstruct.*;
+import org.mapstruct.Builder;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
+@Mapper(
+        componentModel = "spring",
+        builder = @Builder(disableBuilder = true),
+        uses = {
+                ComplaintMapper.class,
+                QualificationMapper.class
+        }
+)
 public abstract class WorkerMapper {
     public static final double EPSILON = 0.01;
 
@@ -44,21 +57,6 @@ public abstract class WorkerMapper {
     @Mapping(target = "complaints", source = "complaints")
     public abstract void updateEntity(@MappingTarget Worker target, WorkerDto source);
 
-    @Mapping(target = "name", source = "qualificationName")
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "minimalManufacturedProducts", source = "manufacturedProductCount")
-    @Mapping(target = "maximalDefectiveProductsPercentage", source = "defectiveProductsPercentage")
-    @Mapping(target = "specialization", source = "specialization")
-    public abstract Qualification toEntity(QualificationDto source);
-
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "name", source = "specializationName")
-    public abstract Specialization toEntity(SpecializationDto source);
-
-    @Mapping(target = "id", source = "complaintId")
-    @Mapping(target = "content", source = "complaintContent")
-    @Mapping(target = "worker", ignore = true)
-    public abstract Complaint toEntity(ComplaintDto source);
 
     @Mapping(target = "lastName", source = "surname")
     @Mapping(target = "lastAuditComment", source = "auditResults")
@@ -70,20 +68,6 @@ public abstract class WorkerMapper {
     @Mapping(target = "defectedProducts", source = "defectiveProductsCount")
     @Mapping(target = "manufacturedProducts", source = "manufacturedProductsCount")
     public abstract WorkerDto toDto(Worker source);
-
-    @Mapping(target = "complaintId", source = "id")
-    @Mapping(target = "complaintContent", source = "content")
-    protected abstract ComplaintDto toDto(Complaint source);
-
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "qualificationName", source = "name")
-    @Mapping(target = "manufacturedProductCount", source = "minimalManufacturedProducts")
-    @Mapping(target = "defectiveProductsPercentage", source = "maximalDefectiveProductsPercentage")
-    protected abstract QualificationDto toDto(Qualification source);
-
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "specializationName", source = "name")
-    protected abstract SpecializationDto toDto(Specialization source);
 
     @Named("calculateQualification")
     protected boolean calculateQualified(Worker worker) {

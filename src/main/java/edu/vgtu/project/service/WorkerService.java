@@ -1,14 +1,11 @@
 package edu.vgtu.project.service;
 
-import edu.vgtu.project.dto.QualificationDto;
-import edu.vgtu.project.dto.SpecializationDto;
 import edu.vgtu.project.dto.WorkerDto;
 import edu.vgtu.project.dto.WorkerShortDto;
 import edu.vgtu.project.dto.utils.PageDto;
 import edu.vgtu.project.entity.Worker;
+import edu.vgtu.project.exception.BusinessException;
 import edu.vgtu.project.mapper.WorkerMapper;
-import edu.vgtu.project.repository.QualificationRepository;
-import edu.vgtu.project.repository.SpecializationRepository;
 import edu.vgtu.project.repository.WorkerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,56 +22,48 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class WorkerService {
     private final WorkerRepository workerRepository;
-    private final QualificationRepository qualificationRepository;
-    private final SpecializationRepository specializationRepository;
-    private final WorkerMapper mapper;
+    private final WorkerMapper workerMapper;
+
     public WorkerDto getWorkerById(Long workerId) {
-        log.info("Поиск работника по идентификатору: {}", workerId);
-
-        final var entity = workerRepository.findById(workerId)
-                        .orElseThrow(() -> new RuntimeException("Работник не найден!"));
-
-        log.info("Найден работник: {}", entity);
-
-        return mapper.toDto(entity);
+        return workerRepository.findById(workerId)
+                .map(workerMapper::toDto)
+                .orElseThrow(() -> new BusinessException(404, "Работник не найден!", null));
     }
 
-    public Long createWorker(WorkerDto worker) {
-        final var entity = mapper.toEntity(worker);
-        log.info("Сохранение данных работника: {}", entity);
-        return workerRepository.save(entity).getId();
+    public Long create(WorkerDto worker) {
+        if (worker == null || worker.getQualification() == null) {
+            throw new BusinessException(400, "Некорректные данные работника", null);
+        }
+
+        return workerRepository.save(
+                workerMapper.toEntity(worker)
+        ).getId();
     }
 
-    public void updateWorker(WorkerDto worker) {
+    public void update(WorkerDto worker) {
+        if (worker == null || worker.getId() == null || worker.getQualification() == null) {
+            throw new BusinessException(400, "Некорректные данные работника", null);
+        }
+
         final var entity = workerRepository.findById(worker.getId())
-                .orElseThrow(() -> new RuntimeException("Работник не найден!"));
+                .orElseThrow(() -> new BusinessException(404, "Работник не найден!", null));
 
-        mapper.updateEntity(entity, worker);
+        workerMapper.updateEntity(entity, worker);
 
         workerRepository.save(entity);
     }
 
-    public Long createQualification(QualificationDto qualification) {
-        final var entity = mapper.toEntity(qualification);
-        log.info("Сохранение данных квалификации: {}", entity);
-        return qualificationRepository.save(entity).getId();
-    }
-
-    public Long createSpecialization(SpecializationDto specializationDto) {
-        final var entity = mapper.toEntity(specializationDto);
-        log.info("Сохранение данных профессии: {}", entity);
-        return specializationRepository.save(entity).getId();
-    }
-
-    public PageDto<WorkerShortDto> getWorkerList(Long page, Long size, Sort.Direction direction) {
-        log.info("Получен запрос на получение страницы рабоников");
-        Page<Worker> workers = workerRepository.findAll(PageRequest.of(page.intValue(), size.intValue(), Sort.by(direction, "id")));
-        return mapper.toPage(workers);
+    public PageDto<WorkerShortDto> getPage(Long page, Long size, Sort.Direction direction) {
+        return workerMapper.toPage(
+                workerRepository.findAll(
+                        PageRequest.of(page.intValue(), size.intValue(), Sort.by(direction, "id"))
+                )
+        );
     }
 
     public List<WorkerDto> getAllWorkers() {
         return workerRepository.findAll().stream()
-                .map(mapper::toDto)
+                .map(workerMapper::toDto)
                 .collect(Collectors.toList());
     }
 }
