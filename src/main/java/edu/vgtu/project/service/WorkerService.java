@@ -5,6 +5,8 @@ import edu.vgtu.project.dto.SpecializationDto;
 import edu.vgtu.project.dto.WorkerDto;
 import edu.vgtu.project.dto.WorkerShortDto;
 import edu.vgtu.project.dto.utils.PageDto;
+import edu.vgtu.project.entity.Qualification;
+import edu.vgtu.project.entity.Specialization;
 import edu.vgtu.project.entity.Worker;
 import edu.vgtu.project.mapper.WorkerMapper;
 import edu.vgtu.project.repository.QualificationRepository;
@@ -80,7 +82,20 @@ public class WorkerService {
     }
 
     public void checkWorkerQualification(Long workerId) {
-        //final var entity = getWorkerById(workerId);
+        Worker worker = workerRepository.findById(workerId).orElseThrow(
+            () -> new RuntimeException("Работник не найден!")
+        );
+        Specialization specialization = worker.getQualification().getSpecialization();
+        List<Qualification> qualifications = qualificationRepository.findAllBySpecialization(specialization);
+        Qualification currentQualification = worker.getQualification();
+        for (Qualification qualification : qualifications)
+            // check if the qualification is relevant for worker
+            if ((qualification.getMinimalManufacturedProducts() < worker.getManufacturedProductsCount() && 
+                qualification.getMaximalDefectiveProductsPercentage() > (double)worker.getDefectedProducts()/(double)worker.getManufacturedProductsCount())
+                && // check if the qualification is higher than current
+                (currentQualification.getMinimalManufacturedProducts() < qualification.getMinimalManufacturedProducts() || 
+                currentQualification.getMaximalDefectiveProductsPercentage() > qualification.getMaximalDefectiveProductsPercentage()))
+                    currentQualification = qualification;
         
     }
 }
