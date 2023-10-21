@@ -5,9 +5,9 @@ RUN mvn clean package
 
 FROM amazoncorretto:17.0.0-alpine
 ADD ./src/main/resources/db/migration/* db/migration/*
-ADD ./src/main/resources/application.yml application.yml
+ADD ./src/main/resources/application.yml application-release.yml
 COPY --from=builder ./target/project.jar application.jar
 
 EXPOSE 8080
 
-CMD [ "java", "-Xmx=1024M", "-Dspring.profiles.active=default", "-jar", "application.jar" ]
+CMD [ "java", "-Xmx1024m", "-Dspring.profiles.active=release", "-jar", "application.jar" ]

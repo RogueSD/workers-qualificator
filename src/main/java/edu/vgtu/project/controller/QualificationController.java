@@ -40,10 +40,9 @@ public class QualificationController {
     }
 
     @PutMapping
-    public Long updateQualification(@RequestBody QualificationDto qualification) {
+    public void updateQualification(@RequestBody QualificationDto qualification) {
         log.info("Сохранение квалификации: {}", qualification);
-        final Long id = qualificationService.create(qualification);
-        log.info("Квалификация сохранёна с идентификатором: {}", id);
-        return id;
+        qualificationService.update(qualification);
+        log.info("Данные квалификации обновлены");
     }
 }

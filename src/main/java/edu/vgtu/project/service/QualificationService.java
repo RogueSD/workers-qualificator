@@ -50,9 +50,12 @@ public class QualificationService {
             throw new BusinessException(400, "Данные квалификации некорректны", null);
         }
 
-        qualificationRepository.save(
-                qualificationMapper.toEntity(qualification)
-        );
+        final Qualification entity = qualificationRepository.findById(qualification.getId())
+                .orElseThrow(() -> new BusinessException(404, "Квалификация не найдена!", null));
+
+        qualificationMapper.updateEntity(entity, qualification);
+
+        qualificationRepository.save(entity);
     }
 
     public Qualification findCorrectQualification(Long specializationId, Long manufactured, Long defected) {

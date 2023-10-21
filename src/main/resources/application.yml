@@ -21,10 +21,10 @@ spring:
     driverClassName: org.postgresql.Driver
   jpa:
     hibernate:
-      default_schema: ${DB_SCHEMA:schema}
       ddl-auto: validate
     properties:
       hibernate:
+        default_schema: ${DB_SCHEMA:schema}
         dialect: org.hibernate.dialect.PostgreSQLDialect
   server:
     port: 8090
