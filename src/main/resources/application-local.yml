@@ -6,3 +6,5 @@ spring:
     url: jdbc:postgresql://localhost:5432/worker_qualification
     username: postgres
     password: zaq1@WSX
+server:
+  port: 8090

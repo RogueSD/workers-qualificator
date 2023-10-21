@@ -19,7 +19,18 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   server:
-    port: 8080
+    port: 8090
+  mail:
+    host: smtp.mail.ru
+    port: 465
+    username: email
+    password: password
+    protocol: smtp
+    properties:
+     mail.transport.protocol: smtp
+     mail.smtp.auth: true
+     mail.smtp.ssl.enable: true
+     mail.smtp.starttls.enable: true
 
 logging:
   level:

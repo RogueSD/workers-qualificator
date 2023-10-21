@@ -51,6 +51,8 @@ public class WorkerService {
         workerMapper.updateEntity(entity, worker);
 
         workerRepository.save(entity);
+
+        checkWorkerQualification(entity.getId());
     }
 
     public PageDto<WorkerShortDto> getPage(Long page, Long size, Sort.Direction direction) {
@@ -65,5 +67,28 @@ public class WorkerService {
         return workerRepository.findAll().stream()
                 .map(workerMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public void checkWorkerQualification(Long workerId) {
+        Worker worker = workerRepository.findById(workerId)
+                        .orElseThrow(() -> new RuntimeException("Работник не найден!"));
+
+        Specialization specialization = worker.getQualification().getSpecialization();
+        List<Qualification> qualifications = qualificationRepository.findAllBySpecialization(specialization);
+        Qualification currentQualification = worker.getQualification();
+        for (Qualification qualification : qualifications)
+            // check if the qualification is relevant for worker
+            if ((qualification.getMinimalManufacturedProducts() < worker.getManufacturedProductsCount() &&
+                qualification.getMaximalDefectiveProductsPercentage() > (double)worker.getDefectedProducts()/(double)worker.getManufacturedProductsCount())
+                && // check if the qualification is higher than current
+                (currentQualification.getMinimalManufacturedProducts() < qualification.getMinimalManufacturedProducts() ||
+                currentQualification.getMaximalDefectiveProductsPercentage() > qualification.getMaximalDefectiveProductsPercentage()))
+                    currentQualification = qualification;
+        if (worker.getQualification() != currentQualification)
+        {
+            worker.setQualification(currentQualification);
+            workerQualificationUpdateEmailService.notifyQualificationUpdate(worker, "nikita-saprygin@mail.ru", "nikita-saprygin@mail.ru");
+            workerRepository.save(worker);
+        }
     }
 }
