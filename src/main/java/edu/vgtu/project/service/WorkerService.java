@@ -30,6 +30,7 @@ public class WorkerService {
     private final QualificationRepository qualificationRepository;
     private final SpecializationRepository specializationRepository;
     private final WorkerMapper mapper;
+    private final EmailService workerQualificationUpdateEmailService;
     public WorkerDto getWorkerById(Long workerId) {
         log.info("Поиск работника по идентификатору: {}", workerId);
 
@@ -54,6 +55,8 @@ public class WorkerService {
         mapper.updateEntity(entity, worker);
 
         workerRepository.save(entity);
+
+        checkWorkerQualification(entity.getId());
     }
 
     public Long createQualification(QualificationDto qualification) {
@@ -81,9 +84,9 @@ public class WorkerService {
     }
 
     public void checkWorkerQualification(Long workerId) {
-        Worker worker = workerRepository.findById(workerId).orElseThrow(
-            () -> new RuntimeException("Работник не найден!")
-        );
+        Worker worker = workerRepository.findById(workerId)
+                        .orElseThrow(() -> new RuntimeException("Работник не найден!"));
+
         Specialization specialization = worker.getQualification().getSpecialization();
         List<Qualification> qualifications = qualificationRepository.findAllBySpecialization(specialization);
         Qualification currentQualification = worker.getQualification();
@@ -95,6 +98,11 @@ public class WorkerService {
                 (currentQualification.getMinimalManufacturedProducts() < qualification.getMinimalManufacturedProducts() || 
                 currentQualification.getMaximalDefectiveProductsPercentage() > qualification.getMaximalDefectiveProductsPercentage()))
                     currentQualification = qualification;
-        
+        if (worker.getQualification() != currentQualification)
+        {
+            worker.setQualification(currentQualification);
+            //workerQualificationUpdateEmailService.notifyQualificationUpdate(worker, "nikita-saprygin@mail.ru");
+            workerRepository.save(worker);
+        }
     }
 }
