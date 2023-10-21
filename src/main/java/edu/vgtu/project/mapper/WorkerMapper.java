@@ -23,6 +23,12 @@ public abstract class WorkerMapper {
     @Mapping(target = "complaints", source = "complaints")
     public abstract Worker toEntity(WorkerDto source);
 
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "qualification", source = "qualification")
+    @Mapping(target = "isQualified", source = ".", qualifiedByName = "calculateQualification")
+    @Mapping(target = "fullName", source = ".", qualifiedByName = "toFullName")
+    public abstract WorkerShortDto toShortDto(Worker source);
+
     @Mapping(target = "currentPage", source = "number")
     @Mapping(target = "totalCount", source = "totalElements")
     @Mapping(target = "content", source = "content")
@@ -101,6 +107,15 @@ public abstract class WorkerMapper {
 
         return (+(qualification.getMaximalDefectiveProductsPercentage() - percentage)) <= EPSILON
                 && ( minimal == 0L || made >= minimal);
+    }
+
+    @Named("toFullName")
+    protected String getFullName(Worker dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        return dto.getSurname() + dto.getName();
     }
 
 }

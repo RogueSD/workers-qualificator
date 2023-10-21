@@ -30,7 +30,6 @@ public class WorkerService {
     private final QualificationRepository qualificationRepository;
     private final SpecializationRepository specializationRepository;
     private final WorkerMapper mapper;
-
     public WorkerDto getWorkerById(Long workerId) {
         log.info("Поиск работника по идентификатору: {}", workerId);
 
@@ -71,7 +70,7 @@ public class WorkerService {
 
     public PageDto<WorkerShortDto> getWorkerList(Long page, Long size, Sort.Direction direction) {
         log.info("Получен запрос на получение страницы рабоников");
-        Page<Worker> workers = workerRepository.getWorkers(PageRequest.of(page.intValue(), size.intValue(), Sort.by(direction, "id")));
+        Page<Worker> workers = workerRepository.findAll(PageRequest.of(page.intValue(), size.intValue(), Sort.by(direction, "id")));
         return mapper.toPage(workers);
     }
 
