@@ -7,22 +7,44 @@ springdoc:
     path: /swagger.html
 
 spring:
+  flyway:
+    enabled: true
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/some_database}
+    user: ${DB_USER:postgres}
+    password: ${DB_PASS:password}
+    schemas: ${DB_SCHEMA:schema}
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/some_database}
     username: ${DB_USER:postgres}
     password: ${DB_PASS:password}
+    schema: ${DB_SCHEMA:schema}
     driverClassName: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
+        default_schema: ${DB_SCHEMA:schema}
         dialect: org.hibernate.dialect.PostgreSQLDialect
   server:
-    port: 8080
+    port: 8090
+  mail:
+    host: ${MAIL_HOST:smtp.some-mail.com}
+    port: ${MAIL_PORT:465}
+    username: ${MAIL_USERNAME:example@test.com}
+    password: ${MAIL_USER_PASSWORD:some_pass}
+    protocol: smtp
+    properties:
+     mail.transport.protocol: smtp
+     mail.smtp.auth: true
+     mail.smtp.ssl.enable: true
+     mail.smtp.starttls.enable: true
 
 logging:
   level:
-    root: info
-    edu.vgtu.project: debug
+    edu.vgtu.project: info
     org.springframework: warn
+
+notification:
+  thread-pool: ${THREAD_POOL_SIZE:10}
+  recipient: ${RECIPIENT:example@test.com}
