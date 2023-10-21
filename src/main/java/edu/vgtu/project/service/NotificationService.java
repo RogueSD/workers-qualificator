@@ -40,6 +40,8 @@ public class NotificationService {
     }
 
     private void checkWorkerQualification(Worker worker) {
+        log.info("Идёт проверка соответствия сотрудника квалиификации");
+
         final Qualification correctQualification = qualificationService.findCorrectQualification(
                 worker.getQualification().getSpecialization().getId(),
                 worker.getManufacturedProductsCount(),
@@ -47,10 +49,15 @@ public class NotificationService {
         );
 
         if (!Objects.equals(worker.getQualification().getId(), correctQualification.getId())) {
+            log.info("В соответсвии со статистикой работника, ему присвоена квалификация с идентификатором: {}", correctQualification.getId());
+
             worker.setQualification(correctQualification);
             final Worker savedWorker = workerRepository.save(worker);
 
             emailService.notifyQualificationUpdate(savedWorker, recipient);
+        }
+        else {
+            log.info("Статистика работника соответствует его текущей квалификации, оповещение не будет отправлено.");
         }
     }
 }
