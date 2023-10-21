@@ -42,7 +42,7 @@ public class SpecializationController {
         return id;
     }
 
-    @PostMapping
+    @PutMapping
     public void updateSpecialization(@RequestBody SpecializationDto specialization) {
         log.info("Обновление профессии: {}", specialization);
         specializationService.update(specialization);

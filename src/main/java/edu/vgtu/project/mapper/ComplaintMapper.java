@@ -3,12 +3,16 @@ package edu.vgtu.project.mapper;
 import edu.vgtu.project.dto.ComplaintDto;
 import edu.vgtu.project.dto.ComplaintFullDto;
 import edu.vgtu.project.entity.Complaint;
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper
+@Mapper(
+        componentModel = "spring",
+        builder = @Builder(disableBuilder = true)
+)
 public abstract class ComplaintMapper {
     @Mapping(target = "id", source = "complaintId")
     @Mapping(target = "content", source = "complaintContent")

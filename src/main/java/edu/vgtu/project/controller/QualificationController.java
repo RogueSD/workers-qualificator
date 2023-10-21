@@ -10,7 +10,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/specialization")
+@RequestMapping("/qualification")
 @RequiredArgsConstructor
 public class QualificationController {
     private final QualificationService qualificationService;
