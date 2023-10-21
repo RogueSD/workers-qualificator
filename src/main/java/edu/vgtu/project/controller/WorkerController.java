@@ -5,6 +5,7 @@ import edu.vgtu.project.dto.SpecializationDto;
 import edu.vgtu.project.dto.WorkerDto;
 import edu.vgtu.project.dto.WorkerShortDto;
 import edu.vgtu.project.dto.utils.PageDto;
+import edu.vgtu.project.service.EmailService;
 import edu.vgtu.project.service.WorkerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class WorkerController {
      private final WorkerService workerService;
+     private final EmailService workerQualificationUpdateEmailService;
 
      @GetMapping(value = "/{id}")
      public WorkerDto getWorkerById(@PathVariable Long id) {

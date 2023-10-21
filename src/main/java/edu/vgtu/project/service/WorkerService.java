@@ -101,7 +101,7 @@ public class WorkerService {
         if (worker.getQualification() != currentQualification)
         {
             worker.setQualification(currentQualification);
-            //workerQualificationUpdateEmailService.notifyQualificationUpdate(worker, "nikita-saprygin@mail.ru");
+            workerQualificationUpdateEmailService.notifyQualificationUpdate(worker, "nikita-saprygin@mail.ru", "nikita-saprygin@mail.ru");
             workerRepository.save(worker);
         }
     }

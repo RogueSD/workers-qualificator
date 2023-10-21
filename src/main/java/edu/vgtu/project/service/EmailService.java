@@ -13,16 +13,16 @@ public class EmailService {
  @Autowired
  public JavaMailSender emailSender;
 
- public void notifyQualificationUpdate(Worker worker, String toAddress)
+ public void notifyQualificationUpdate(Worker worker, String fromAddress, String toAddress)
  {
     String subject = "Изменение квалификации рабочего";
     String message = "Рабочий "+worker.getSurname()+" "+worker.getName()+" достиг квалификации "+worker.getQualification();
-    this.sendTextEmail(toAddress, subject, message);
+    this.sendTextEmail(fromAddress, toAddress, subject, message);
  }
 
- private void sendTextEmail(String toAddress, String subject, String message) {
-
+ public void sendTextEmail(String fromAddress, String toAddress, String subject, String message) {
   SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+  simpleMailMessage.setFrom(fromAddress);
   simpleMailMessage.setTo(toAddress);
   simpleMailMessage.setSubject(subject);
   simpleMailMessage.setText(message);
