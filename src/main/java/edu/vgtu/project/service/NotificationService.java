@@ -22,6 +22,8 @@ public class NotificationService {
     public static final double EPSILON = 0.01;
     @Value("${notification.thread-pool}")
     private int threadPoolSize;
+    @Value("${notification.recipient}")
+    private String recipient;
     private ExecutorService executorService;
 
     private final EmailService emailService;
@@ -38,56 +40,17 @@ public class NotificationService {
     }
 
     private void checkWorkerQualification(Worker worker) {
-        QualificationDto correctQualification = findCorrectQualification(worker);
+        final Qualification correctQualification = qualificationService.findCorrectQualification(
+                worker.getQualification().getSpecialization().getId(),
+                worker.getManufacturedProductsCount(),
+                worker.getDefectiveProductsCount()
+        );
 
-        if (!Objects.equals(worker.getQualification().getId(), correctQualification.getId()))
-        {
-            worker.setQualification(
-                    Qualification.builder()
-                            .id(correctQualification.getId())
-                            .build()
-            );
-            Worker savedWorker = workerRepository.save(worker);
-            emailService.notifyQualificationUpdate(savedWorker, "nikita-saprygin@mail.ru");
+        if (!Objects.equals(worker.getQualification().getId(), correctQualification.getId())) {
+            worker.setQualification(correctQualification);
+            final Worker savedWorker = workerRepository.save(worker);
+
+            emailService.notifyQualificationUpdate(savedWorker, recipient);
         }
-    }
-
-    private QualificationDto findCorrectQualification(Worker worker) {
-        QualificationDto currentQualification = qualificationService.find(worker.getQualification().getId());
-        List<QualificationDto> qualifications = qualificationService.findAllBySpecializationId(currentQualification.getSpecialization().getId());
-
-        for (QualificationDto qualification : qualifications) {
-            if (calculateWorkerQualifiedFor(worker, qualification) && isQualificationHigher(qualification, currentQualification)) {
-                currentQualification = qualification;
-            }
-        }
-
-        return currentQualification;
-    }
-
-    protected boolean calculateWorkerQualifiedFor(Worker worker, QualificationDto qualification) {
-        if (worker == null || worker.getQualification() == null) {
-            return true;
-        }
-
-        Long made = worker.getManufacturedProductsCount();
-
-        if (made == null || made == 0L) {
-            return false;
-        }
-
-        long defective = worker.getDefectiveProductsCount() == null ? 0L : worker.getDefectiveProductsCount();
-
-        double percentage = (double) defective / (double) made;
-
-        final long minimal = qualification.getManufacturedProductCount() == null ? 0L : qualification.getManufacturedProductCount();
-
-        return qualification.getDefectiveProductsPercentage() - percentage >= EPSILON
-                && ( minimal == 0L || made >= minimal);
-    }
-
-    protected boolean isQualificationHigher(QualificationDto left, QualificationDto right) {
-        return left.getManufacturedProductCount() > right.getManufacturedProductCount() ||
-                left.getDefectiveProductsPercentage() - right.getDefectiveProductsPercentage() <= EPSILON;
     }
 }

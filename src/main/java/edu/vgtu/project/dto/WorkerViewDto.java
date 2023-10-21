@@ -10,14 +10,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class WorkerDto {
+public class WorkerViewDto {
     Long id;
     String firstName;
     String lastName;
     QualificationDto qualification;
     Boolean isQualified;
-    String lastAuditComment;
+    String auditComment;
     List<ComplaintDto> complaints;
     Long manufacturedProducts;
-    Long defectedProducts;
+    Double defectedProductsPercent;
 }

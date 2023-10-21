@@ -1,6 +1,7 @@
 package edu.vgtu.project.controller;
 
-import edu.vgtu.project.dto.WorkerDto;
+import edu.vgtu.project.dto.WorkerEditDto;
+import edu.vgtu.project.dto.WorkerViewDto;
 import edu.vgtu.project.dto.WorkerShortDto;
 import edu.vgtu.project.dto.utils.PageDto;
 import edu.vgtu.project.service.EmailService;
@@ -19,9 +20,9 @@ public class WorkerController {
      private final EmailService workerQualificationUpdateEmailService;
 
      @GetMapping(value = "/{id}")
-     public WorkerDto getWorkerById(@PathVariable Long id) {
+     public WorkerViewDto getWorkerById(@PathVariable Long id) {
          log.info("Получен запрос на получение данных работника с идентификатором: {}", id);
-         final WorkerDto worker = workerService.getWorkerById(id);
+         final WorkerViewDto worker = workerService.getWorkerById(id);
          log.info("Сформированные данные работника: {}", worker);
          return worker;
      }
@@ -38,7 +39,7 @@ public class WorkerController {
     }
 
     @PostMapping
-    public Long createWorker(@RequestBody WorkerDto worker) {
+    public Long createWorker(@RequestBody WorkerEditDto worker) {
         log.info("Сохранение работника: {}", worker);
         final Long id = workerService.create(worker);
         log.info("Работник сохранён с идентификатором: {}", id);
@@ -46,7 +47,7 @@ public class WorkerController {
     }
 
      @PutMapping
-     public void updateWorker(@RequestBody WorkerDto worker) {
+     public void updateWorker(@RequestBody WorkerEditDto worker) {
          log.info("Получен запрос на обновление данных работника: {}", worker);
          workerService.update(worker);
          log.info("Данные работника обновлены");
