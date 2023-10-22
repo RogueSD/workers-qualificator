@@ -1,0 +1,12 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 30px;
+    background-color: lightcoral;
+    border: 1px solid black;
+}
+
+.button {
+    width: 150px;
+}
