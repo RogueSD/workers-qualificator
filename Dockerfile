@@ -4,7 +4,7 @@ ADD ./src src/
 RUN mvn clean package
 
 FROM amazoncorretto:17.0.0-alpine
-ADD ./src/main/resources/db/migration/* db/migration/*
+ADD ./src/main/resources/db/migration/* db/migration/
 ADD ./src/main/resources/application.yml application-release.yml
 COPY --from=builder ./target/project.jar application.jar
 

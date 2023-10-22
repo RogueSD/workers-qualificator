@@ -1,14 +1,14 @@
 package edu.vgtu.project.mapper;
 
-import edu.vgtu.project.dto.WorkerEditDto;
-import edu.vgtu.project.dto.WorkerViewDto;
-import edu.vgtu.project.dto.WorkerShortDto;
+import edu.vgtu.project.dto.*;
+import edu.vgtu.project.dto.rows.WorkerRowDto;
 import edu.vgtu.project.dto.utils.PageDto;
 import edu.vgtu.project.entity.Worker;
-import jdk.jfr.Name;
 import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.*;
 import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 @Mapper(
         componentModel = "spring",
@@ -64,6 +64,22 @@ public abstract class WorkerMapper {
     @Mapping(target = "manufacturedProducts", source = "manufacturedProductsCount")
     @Mapping(target = "defectedProductsPercent", source = ".", qualifiedByName = "calculateDefectedPercent")
     public abstract WorkerViewDto toViewDto(Worker source);
+
+    @Mapping(target = "qualificationName", source = "qualification.qualificationName")
+    @Mapping(target = "manufacturedProductCount", source = "qualification.manufacturedProductCount")
+    @Mapping(target = "defectiveProductsPercentage", source = "qualification.defectiveProductsPercentage")
+    @Mapping(target = "complaints", qualifiedByName = "complaintsToString")
+    public abstract WorkerRowDto toRowDto(WorkerViewDto view);
+
+    @Named("complaintsToString")
+    protected String complaintsToString(List<ComplaintDto> complaints) {
+        StringBuilder value = new StringBuilder();
+        complaints.forEach(c -> {
+            value.append(c.getComplaintContent());
+            value.append(", ");
+        });
+        return value.toString();
+    }
 
     @Named("calculateQualification")
     protected boolean calculateQualified(Worker source) {
