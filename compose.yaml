@@ -2,7 +2,9 @@ services:
   frontend:
     build: frontend/
     ports:
-      - '5000:5000'
+      - '3000:3000'
+    networks:
+      - application
   backend:
     build: backend/
     environment:
