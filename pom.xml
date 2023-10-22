@@ -5,8 +5,11 @@
 
     <groupId>edu.vgtu</groupId>
     <artifactId>project</artifactId>
-    <version>0.1</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
+
+    <name>Приложение для управления квалификацией работников на предприятии</name>
+    <description>Проект по дисциплине &quot;Проектная деятельность&quot; №1</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

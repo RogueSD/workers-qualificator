@@ -6,10 +6,12 @@
     <parent>
         <groupId>edu.vgtu</groupId>
         <artifactId>project</artifactId>
-        <version>0.1</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>frontend</artifactId>
+
+    <name>Клиент</name>
 
     <build>
         <plugins>
