@@ -4,7 +4,7 @@ COPY ["package.json", "package-lock.json*", "./"]
 
 RUN npm install -g --force
 
-COPY . .
+COPY project_pd .
 
 EXPOSE 3000
 
