@@ -1,13 +1,18 @@
-FROM node:18 as builder
-WORKDIR /app
-ADD package.json package.json
-RUN npm install --silent
-COPY . /app
-RUN npm run build
-
 FROM node:18-alpine
-COPY --from=builder ["/app/build", "/app/public", "/app/src", "/app/node_modules", "./"]
-COPY ["package.json", "release/proxy.conf.json", "./"]
+WORKDIR /app/
+# Зависимости node
+RUN apk add --no-cache python3 py3-pip make g++
+# Данные проекта
+COPY public/ /app/public
+COPY src/ /app/src
+COPY tsconfig.json /app/
+COPY release/package.json /app/
+COPY release/proxy.conf.json /app/
+# Зависимости
+RUN npm install
+# Сборка
+RUN npm run build
+# Открыть порт
 EXPOSE 3000
-CMD ["ls", "|", "cat"]
+# Запуск проекта
 CMD ["npm", "run", "start"]
