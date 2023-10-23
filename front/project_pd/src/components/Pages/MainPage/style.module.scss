@@ -1,12 +1,63 @@
-.header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin-top: 30px;
-    background-color: lightcoral;
-    border: 1px solid black;
+.menuBar {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+
+	.button {
+		width: 175px;
+		height: 50px;
+		margin: 20px 20px 20px 0;
+		background-color: white;
+		border: 2px solid darkslategray;
+		border-radius: 10px;
+		color: darkslategray;
+		font-family: 'Courier New', Courier, monospace;
+	}
+
+	.button:hover {
+		box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);
+		cursor: pointer;
+	}
+
+	.button:active {
+		box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1);
+	}
 }
 
-.button {
-    width: 150px;
+.header {
+	display: flex;
+	flex-direction: row;
+	width: 80%;
+	height: 30px;
+	border: 2px solid darkslategray;
+	font-family: 'Courier New', Courier, monospace;
+	font-size: 16px;
+	font-weight: 600;
+	background-color: cyan;
+
+	.left {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 20%;
+		height: 100%;
+		border-right: 2px solid darkslategray;
+	}
+
+	.center {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 60%;
+		height: 100%;
+	}
+
+	.right {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 20%;
+		height: 100%;
+		border-left: 2px solid darkslategray;
+	}
 }

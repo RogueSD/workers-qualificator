@@ -1,5 +1,5 @@
 export interface Specialization {
-  id: number;
+  id?: number;
   specializationName: string;
 }
 

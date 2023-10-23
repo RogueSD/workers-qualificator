@@ -1,39 +1,57 @@
 import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
-import { Worker, getWorker } from "../../../models/worker";
+import { LongWorker, getWorker } from "../../../models/worker";
 import { useParams } from "react-router-dom";
+import ListItem from "../../ListItem/ListItem";
+import ModalUpdate from "../../UI/ModalCreate/ModalUpdate/ModalUpdate";
 
 const DetailPage = () => {
-  const [worker, setWorker] = useState<Worker>();
+  const [worker, setWorker] = useState<LongWorker>();
   const { id } = useParams<{ id: any }>();
 
-  useEffect(() => {
-    const fetchWorker = async () => {
-      const response = await getWorker(id);
-      setWorker(response.data);
-    };
+  // Получение работника по id
+  const fetchWorker = async () => {
+    const response = await getWorker(id);
+    setWorker(response.data);
+  };
 
+  useEffect(() => {
     fetchWorker();
   }, []);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
-      <div className={styles.field}>
-        <div>Идентификатор: {worker?.id}</div>
-        <div>Фамилия: {worker?.lastName}</div>
-        <div>Имя: {worker?.firstName}</div>
-        <div>Комментарий аудита: {worker?.auditComment}</div>
-        <div>Квалификация: {worker?.qualification.qualificationName}</div>
-				<div>Количество произведенной продукции: {worker?.qualification.manufacturedProductCount}</div>
-				<div>Процент бракованной продукции: {worker?.qualification.defectiveProductsPercentage}</div>
-        <div>Специализация: {worker?.qualification.specialization.specializationName}</div>
-        <div>Количество произведенных изделий: {worker?.manufacturedProducts}</div>
-        <div>Процент бракованных изделий: {worker?.defectedProductsPercent}</div>
-        <div>Квалифицирован: {worker?.isQualified ? "Да" : "Нет"}</div>
-        <div>Жалобы:</div>
-        {worker?.complaints.map((complaint) => (
-          <div key={complaint.complaintid}>{complaint.complaintComment}</div>
-        ))}
+     <ModalUpdate isOpen={isModalOpen} onClose={closeModal} longWorker={worker}/>
+      <div className={styles.root}>
+        <div className={styles.buttons}>
+          <button className={styles.button} onClick={() => window.history.back()}>Назад</button>
+          <button className={styles.button} onClick={openModal}>Изменить</button>
+        </div>
+        <div className={styles.list}>
+          <ListItem static={"Фамилия:"} dynamic={worker?.lastName} />
+          <ListItem static={"Имя:"} dynamic={worker?.firstName} />
+          <ListItem static={"Комментарий аудита:"} dynamic={worker?.auditComment} />
+          <ListItem static={"Квалификация:"} dynamic={worker?.qualification?.qualificationName} />
+          <ListItem static={"Количество произведенной продукции:"} dynamic={worker?.qualification?.manufacturedProductCount} />
+          <ListItem static={"Процент бракованной продукции:"} dynamic={worker?.qualification?.defectiveProductsPercentage} />
+          <ListItem static={"Специализация:"} dynamic={worker?.qualification?.specialization.specializationName} />
+          <ListItem static={"Количество произведенных изделий:"} dynamic={worker?.manufacturedProducts} />
+          <ListItem static={"Процент бракованных изделий:"} dynamic={worker?.defectedProductsPercent} />
+          <ListItem static={"Квалифицирован?:"} dynamic={worker?.isQualified ? "Да" : "Нет"} />
+          <ListItem 
+            static={"Жалобы:"} 
+            dynamic={worker?.complaints?.map((complaint) => (
+            <div key={complaint.complaintid}>{complaint.complaintComment}</div>
+          ))} />
+        </div>
       </div>
     </>
   );

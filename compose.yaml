@@ -9,9 +9,9 @@ services:
       - 'MAIL_HOST=smtp.mail.ru'
       - 'MAIL_PORT=465'
       - 'THREAD_POOL_SIZE=5'
-      - 'RECIPIENT=' # Получатель
-      - 'MAIL_USERNAME=' # Почта отправки
-      - 'MAIL_USER_PASSWORD=' # Пароль для приложения
+      - 'RECIPIENT=khryukin.denis.13@mail.ru ' # Получатель
+      - 'MAIL_USERNAME=sergio.kun.88@mail.ru ' # Почта отправки
+      - 'MAIL_USER_PASSWORD=city1894 ' # Пароль для приложения
     ports:
       - '8080:8080'
     depends_on:

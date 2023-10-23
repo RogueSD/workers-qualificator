@@ -7,13 +7,14 @@ interface IProp {
   worker: ShortWorker;
 }
 
-const Worker = ({ worker }: IProp) => {
+const Worker: React.FC<IProp> = ({ worker }) => {
+  
   return (
 		<Link to={`/worker/${worker.id}`} className={styles.link}> 
     <div className={styles.field}>
-      <div>{worker.id}</div>
-      <div>{worker.fullName} </div>
-      <div>{worker.isQualified ? 'Да' : 'Нет'} </div>
+      <div className={styles.left}>{worker.id}</div>
+      <div className={styles.center}>{worker.fullName} </div>
+      <div className={styles.right}>{worker.isQualified ? 'Да' : 'Нет'} </div>
     </div>
 		</Link>
   );

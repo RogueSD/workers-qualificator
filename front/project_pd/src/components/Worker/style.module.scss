@@ -1,16 +1,45 @@
+.link {
+	text-decoration: none;
+	color: inherit;
+}
+
 .field {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    background-color: lightblue;
-    border: 1px solid black;
+	display: flex;
+	flex-direction: row;
+	height: 30px;
+	border: 2px solid darkslategray;
+	font-family: 'Courier New', Courier, monospace;
+	font-size: 16px;
+	margin-top: -2px;
+
+	.left {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 20%;
+		height: 100%;
+		border-right: 2px solid darkslategray;
+	}
+
+	.center {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 60%;
+		height: 100%;
+	}
+
+	.right {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 20%;
+		height: 100%;
+		border-left: 2px solid darkslategray;
+	}
 }
 
 .field:hover {
-    background-color: lightcyan;
-}
-
-.link {
-    text-decoration: none;
-    color: inherit; 
+	background-color: lightcyan;
+	font-weight: 600;
 }

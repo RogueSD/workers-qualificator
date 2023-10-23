@@ -9,17 +9,17 @@ export interface ShortWorker {
   isQualified: boolean;
 }
 
-export interface Worker {
+export interface LongWorker {
   id: number;
   lastName: string;
   firstName: string;
-  auditComment: string;
-  qualification: Qualification;
+  auditComment?: string;
+  qualification?: Qualification;
   specialization: Specialization;
-  manufacturedProducts: number;
-  defectedProductsPercent: number;
-  isQualified: boolean;
-  complaints: Complaint[];
+  manufacturedProducts?: number;
+  defectedProductsPercent?: number;
+  isQualified?: boolean;
+  complaints?: Complaint[];
 }
 
 export interface PageDtoWorker {
@@ -28,6 +28,7 @@ export interface PageDtoWorker {
   totalCount: number;
 }
 
+// Получение всех работников
 export const getWorkersPage = async (page: number = 0, size: number = 10, direction: string = 'ASC'): Promise<AxiosResponse<PageDtoWorker>> => {
   try {
     const response = await axios.get(`/api/worker?page=${page}&size=${size}&direction=${direction}`);
@@ -37,7 +38,9 @@ export const getWorkersPage = async (page: number = 0, size: number = 10, direct
   }
 };
 
-export const getWorker = async (id: number): Promise<AxiosResponse<Worker>> => {
+// Получение конкретного работника по id
+export const getWorker = async (id: number): Promise<AxiosResponse<LongWorker>> => {
+
   try {
     const response = await axios.get(`/api/worker/${id}`);
     return response;
@@ -46,17 +49,19 @@ export const getWorker = async (id: number): Promise<AxiosResponse<Worker>> => {
   }
 };
 
-export const updateWorker = async (worker: Worker): Promise<void> => {
+// Изменение данных о работнике
+export const updateWorker = async (worker: LongWorker): Promise<void> => {
   try {
-    await axios.put('/worker', worker);
+    await axios.put(`api/worker`, worker);
   } catch (error: any) {
     throw new Error(error);
   }
 };
 
-export const createWorker = async (worker: Omit<Worker, 'id'>): Promise<void> => {
+// Добавление нового работника
+export const createWorker = async (worker: LongWorker): Promise<void> => {
   try {
-    await axios.post('/worker', worker);
+    await axios.post('/api/worker', worker);
   } catch (error: any) {
     throw new Error(error);
   }
