@@ -57,6 +57,16 @@
                             <arguments>run build</arguments>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>start</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run start</arguments>
+                        </configuration>
+                        <phase>none</phase>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
