@@ -40,6 +40,7 @@ export const getWorkersPage = async (page: number = 0, size: number = 10, direct
 
 // Получение конкретного работника по id
 export const getWorker = async (id: number): Promise<AxiosResponse<LongWorker>> => {
+
   try {
     const response = await axios.get(`/api/worker/${id}`);
     return response;
