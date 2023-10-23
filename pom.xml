@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Приложение для управления квалификацией работников на предприятии</name>
+    <name>worker-qualification-application</name>
     <description>Проект по дисциплине &quot;Проектная деятельность&quot; №1</description>
 
     <parent>

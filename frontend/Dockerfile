@@ -6,9 +6,8 @@ COPY . /app
 RUN npm run build
 
 FROM node:18-alpine
+COPY --from=builder ["/app/build", "/app/public", "/app/src", "/app/node_modules", "./"]
 COPY ["package.json", "release/proxy.conf.json", "./"]
-COPY --from=builder /app/build ./build
-
 EXPOSE 3000
-
+CMD ["ls", "|", "cat"]
 CMD ["npm", "run", "start"]
