@@ -1,0 +1,23 @@
+.list {
+  display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: 100%;
+	border: 2px solid darkslategray;
+	border-radius: 10px;
+	margin-bottom: 10px;
+	min-height: 50px;
+
+	.static {
+		display: flex;
+		align-items: center;
+		min-width: 400px;
+		margin-left: 25px;
+		border-right: 2px solid darkslategray;
+		height: 100%;
+	}
+
+	.dynamic {
+		margin: 5px 15px;
+	}
+}

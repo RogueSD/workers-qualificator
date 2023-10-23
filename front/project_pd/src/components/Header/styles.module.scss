@@ -1,3 +1,10 @@
 .header {
-    color: red;
+	height: 64px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-bottom: 2px solid darkslategray;
+	font-size: 22px;
+	font-family: 'Courier New', Courier, monospace;
+	color: darkslategray;
 }
