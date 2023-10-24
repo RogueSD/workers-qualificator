@@ -1,0 +1,43 @@
+server.servlet.context-path: /api
+springdoc.swagger-ui.path: /swagger.html
+
+spring:
+  flyway:
+    enabled: ${FLYWAY_ENABLED}
+    url: ${DB_URL}
+    user: ${DB_USER}
+    password: ${DB_PASS}
+    schemas: ${DB_SCHEMA}
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    schema: ${DB_SCHEMA}
+    driverClassName: org.postgresql.Driver
+  jpa:
+    hibernate.ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: ${DB_SCHEMA}
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  server:
+    port: ${SERVER_PORT}
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_USER_PASSWORD}
+    protocol: smtp
+    properties:
+      mail.transport.protocol: smtp
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+      mail.smtp.starttls.enable: true
+
+logging.level:
+    edu.vgtu.project: info
+    org.springframework: warn
+
+notification:
+  thread-pool: ${NOTIFICATION_THREAD_POOL_SIZE}
+  recipient: ${NOTIFICATION_RECIPIENT}

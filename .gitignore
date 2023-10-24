@@ -1,6 +1,6 @@
 HELP.md
 target/
-!.mvn/wrapper/maven-wrapper.jar
+!backend/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -29,7 +29,6 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-/frontend
 
 
 ### VS Code ###
@@ -42,9 +41,11 @@ data/
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+**/node
 **/node_modules
 /.pnp
 .pnp.js
+**/package-lock.json
 
 # testing
 /coverage

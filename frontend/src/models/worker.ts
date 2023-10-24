@@ -52,7 +52,8 @@ export const getWorker = async (id: number): Promise<AxiosResponse<LongWorker>> 
 // Изменение данных о работнике
 export const updateWorker = async (worker: LongWorker): Promise<void> => {
   try {
-    await axios.put(`api/worker`, worker);
+    debugger;
+    await axios.put(`/api/worker`, worker);
   } catch (error: any) {
     throw new Error(error);
   }

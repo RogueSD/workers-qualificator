@@ -52,7 +52,7 @@ public class WorkerService {
     }
 
     public void update(WorkerEditDto worker) {
-        if (worker == null || worker.getId() == null || worker.getSpecialization() == null || worker.getSpecialization().getId() == null) {
+        if (worker == null || worker.getId() == null) {
             throw new BusinessException(400, "Некорректные данные работника", null);
         }
 
@@ -60,9 +60,11 @@ public class WorkerService {
                 .orElseThrow(() -> new BusinessException(404, "Работник не найден!", null));
 
         final Long previousSpecializationId = entity.getQualification().getSpecialization().getId();
-        final Long currentSpecializationId = worker.getSpecialization().getId();
+        final Long currentSpecializationId = worker.getSpecialization() == null
+                ? null
+                : worker.getSpecialization().getId();
 
-        if (!Objects.equals(previousSpecializationId, currentSpecializationId)) {
+        if (currentSpecializationId != null && !Objects.equals(previousSpecializationId, currentSpecializationId)) {
             worker.setDefectedProducts(0L);
             worker.setManufacturedProducts(0L);
 
@@ -80,7 +82,7 @@ public class WorkerService {
         workerRepository.save(entity);
 
         // Только если не было смены профессии
-        if (Objects.equals(previousSpecializationId, currentSpecializationId)) {
+        if (currentSpecializationId == null || Objects.equals(previousSpecializationId, currentSpecializationId)) {
             notificationService.checkConditionsAndNotify(entity);
         }
     }

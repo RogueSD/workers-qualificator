@@ -1,19 +1,27 @@
 services:
-  application:
-    build: .
+  frontend:
+    build: frontend/
+    ports:
+      - '3000:3000'
+    networks:
+      - application
+  backend:
+    build: backend/
     environment:
+      - 'SERVER_PORT=8080'
+      - 'FLYWAY_ENABLED=true'
       - 'DB_URL=jdbc:postgresql://postgres:5432/project'
       - 'DB_USER=worker-qualification-service'
       - 'DB_PASS=secret'
       - 'DB_SCHEMA=service'
       - 'MAIL_HOST=smtp.mail.ru'
       - 'MAIL_PORT=465'
-      - 'THREAD_POOL_SIZE=5'
-      - 'RECIPIENT=khryukin.denis.13@mail.ru ' # Получатель
-      - 'MAIL_USERNAME=sergio.kun.88@mail.ru ' # Почта отправки
-      - 'MAIL_USER_PASSWORD=city1894 ' # Пароль для приложения
+      - 'MAIL_USERNAME='
+      - 'MAIL_USER_PASSWORD='
+      - 'NOTIFICATION_THREAD_POOL_SIZE=5'
+      - 'NOTIFICATION_RECIPIENT='
     ports:
-      - '8080:8080'
+      - '10101:8080'
     depends_on:
       - postgres
     networks:
