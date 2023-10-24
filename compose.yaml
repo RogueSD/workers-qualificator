@@ -16,10 +16,10 @@ services:
       - 'DB_SCHEMA=service'
       - 'MAIL_HOST=smtp.mail.ru'
       - 'MAIL_PORT=465'
-      - 'MAIL_USERNAME=nikita-saprygin@mail.ru'
-      - 'MAIL_USER_PASSWORD=pTq4fKvZtVd1e2FF05RR'
+      - 'MAIL_USERNAME='
+      - 'MAIL_USER_PASSWORD='
       - 'NOTIFICATION_THREAD_POOL_SIZE=5'
-      - 'NOTIFICATION_RECIPIENT=pwgda30a@gmail.com'
+      - 'NOTIFICATION_RECIPIENT='
     ports:
       - '10101:8080'
     depends_on:
