@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
-import { LongWorker, ShortWorker, createWorker, getWorkersPage } from "../../../models/worker";
+import { EditWorker, ShortWorker, createWorker, getWorkersPage } from "../../../models/worker";
 import axios from "axios";
 import Modal from "../../UI/ModalCreate/ModalCreate";
 import Worker from "../../Worker/Worker";
@@ -19,7 +19,6 @@ const MainPage = () => {
   }, []);
 
   // Сохранение xlsx-файла
-    
   const downloadFile = async () => {
     try {
       const response = await axios.get("api/integration/export", {
@@ -47,7 +46,7 @@ const MainPage = () => {
   };
 
   // Добавление нового работника
-  const handleAddWorker = (newWorker: LongWorker) => {
+  const handleAddWorker = (newWorker: EditWorker) => {
     createWorker(newWorker)
       .then(() => {
         fetchWorkers();

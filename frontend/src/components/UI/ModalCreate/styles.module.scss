@@ -51,6 +51,17 @@
 		}
 	}
 
+	.select {
+		background-color: white;
+		width: 300px;
+		height: 30px;
+		border: 1px solid darkslategray;
+		border-radius: 5px;
+		font-family: 'Courier New', Courier, monospace;
+		padding: 0 15px;
+		margin: 5px 0;
+	}
+
 	.buttons {
 		display: flex;
 		flex-direction: row;

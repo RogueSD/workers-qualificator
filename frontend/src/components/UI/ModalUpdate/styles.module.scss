@@ -12,7 +12,7 @@
 	background-color: white;
 	width: 400px;
 	padding: 25px;
-	height: 400px;
+	height: 440px;
 	display: flex;
 	flex-direction: column;
 	border: 2px solid darkslategray;
@@ -49,6 +49,26 @@
 			outline: none;
 			border: 2px solid darkslategray;
 		}
+	}
+
+	.select {
+		background-color: white;
+		width: 300px;
+		height: 30px;
+		border: 1px solid darkslategray;
+		border-radius: 5px;
+		font-family: 'Courier New', Courier, monospace;
+		padding: 0 15px;
+		margin: 5px 0;
+	}
+
+	.label {
+		display: flex;
+		width: 100%;
+		font-size: 10px;
+		font-family: 'Courier New', Courier, monospace;
+		color: darkslategray;
+		margin-left: 60px;
 	}
 
 	.buttons {
