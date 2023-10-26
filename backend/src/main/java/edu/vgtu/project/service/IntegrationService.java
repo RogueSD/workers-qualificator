@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -54,7 +55,7 @@ public class IntegrationService {
             Row row = sheet.createRow(i+1);
             for(int j = 0; j < fields.length; j++) {
                 Cell cell = row.createCell(j);
-                cell.setCellValue(fields[j].get(item).toString());
+                cell.setCellValue(Objects.toString(fields[j].get(item), null));
             }
         }
     }
