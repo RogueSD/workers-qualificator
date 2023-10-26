@@ -11,15 +11,25 @@ export interface ShortWorker {
 
 export interface LongWorker {
   id: number;
-  lastName: string;
-  firstName: string;
+  lastName?: string;
+  firstName?: string;
   auditComment?: string;
   qualification?: Qualification;
-  specialization: Specialization;
   manufacturedProducts?: number;
   defectedProductsPercent?: number;
   isQualified?: boolean;
   complaints?: Complaint[];
+}
+
+export interface EditWorker {
+  id: number;
+  lastName?: string;
+  firstName?: string;
+  auditComment?: string;
+  qualification: Qualification;
+  specialization: Specialization;
+  manufacturedProducts?: number;
+  defectedProducts?: number;
 }
 
 export interface PageDtoWorker {
@@ -40,7 +50,6 @@ export const getWorkersPage = async (page: number = 0, size: number = 10, direct
 
 // Получение конкретного работника по id
 export const getWorker = async (id: number): Promise<AxiosResponse<LongWorker>> => {
-
   try {
     const response = await axios.get(`/api/worker/${id}`);
     return response;
@@ -50,9 +59,8 @@ export const getWorker = async (id: number): Promise<AxiosResponse<LongWorker>> 
 };
 
 // Изменение данных о работнике
-export const updateWorker = async (worker: LongWorker): Promise<void> => {
+export const updateWorker = async (worker: EditWorker): Promise<void> => {
   try {
-    debugger;
     await axios.put(`/api/worker`, worker);
   } catch (error: any) {
     throw new Error(error);
@@ -60,7 +68,7 @@ export const updateWorker = async (worker: LongWorker): Promise<void> => {
 };
 
 // Добавление нового работника
-export const createWorker = async (worker: LongWorker): Promise<void> => {
+export const createWorker = async (worker: EditWorker): Promise<void> => {
   try {
     await axios.post('/api/worker', worker);
   } catch (error: any) {
